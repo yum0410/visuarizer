@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-def create_multi_label_count_hist(df, ml_col, save_figure_path=None):
+def create_bar_fig_ml_class(df, ml_col, save_figure_path=None):
     """create histogram of multi label count
 
     Parameters
