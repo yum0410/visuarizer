@@ -1,10 +1,11 @@
 # visuarizer
 
 # DONE
-* create_bar_fig_ml_class
+* to_hist_ml_class
+* to_hist_ml_label
+* to_heatmap_column_corr
 
 # TODO
-* create_bar_fig_ml_tag_per_row
 * create_heatmap_column_corr
 * create_wordcloud
 * create_feature_importance
