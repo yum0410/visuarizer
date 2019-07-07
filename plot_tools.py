@@ -4,6 +4,7 @@ import os
 from sklearn.preprocessing import MultiLabelBinarizer
 import pandas as pd
 import seaborn as sns
+import util
 
 
 FONT_PATH = "./ipaexg.ttf"
@@ -57,7 +58,7 @@ def to_hist_ml_label(ml_series, save_figure_path=None):
     plt.xticks(range(1, vec.shape[1]+1), vec.columns, fontproperties=font_prop)
     if save_figure_path:
         plt.savefig(os.path.join(save_figure_path, ml_series.name+"_class_counts.png"))
-    plt.show()
+    return plt
 
 def to_corr_heatmap(df, threshold_value, save_figure_path=None):
     """create heatmap column corr 
@@ -75,17 +76,16 @@ def to_corr_heatmap(df, threshold_value, save_figure_path=None):
     -------
     plt : matplotlib.pyplot
         histogram plt object
+    corr_df : DataFrame
+        corr DataFrame 
     """
     corr_df = df.corr()
-    def _select_corr(row):
-        return {str(key): val for key, val in row.items() if row.name != key and (val>threshold_value or val<-threshold_value)}
     _, ax = plt.subplots(figsize=(8,8))
     sns.heatmap(corr_df, annot=True, fmt=".2f")
     ax.set_title("correlation")
     ax.set_xticklabels(ax.get_xmajorticklabels(), rotation=0, fontproperties=font_prop)
     ax.set_yticklabels(ax.get_ymajorticklabels(), rotation=0, fontproperties=font_prop)
-    plt.show()
     if save_figure_path:
         plt.savefig(os.path.join(save_figure_path, "correlation.png"))
-    corr_df["selected"] = corr_df.apply(lambda x: _select_corr(x), axis=1)
-    return corr_df["selected"]
+    corr_df["selected"] = corr_df.apply(lambda x: util.select_over_cell_from_row(x, threshold_value), axis=1)
+    return plt, corr_df
